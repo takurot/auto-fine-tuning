@@ -1,0 +1,33 @@
+training:
+  steps_per_window: 100
+  batch_size: 1024
+  lr: 3.0e-5
+  grad_clip: 1.0
+monitoring:
+  spike_sigma: 3.0
+  grad_norm_threshold: 10000.0
+  window_size: 1000
+forensics:
+  outlier_ratio: 100.0
+  zscore_threshold: 6.0
+recovery:
+  max_retries: 3
+checkpoints:
+  interval: 100
+  keep_last_n: 5
+  async_save: true
+  dir: checkpoints
+curriculum:
+  eval_interval: 1000
+  domains: [general]
+  weights:
+    general: 1.0
+notifications:
+  webhook_url: null
+  slack_channel: null
+persistence:
+  backend: sqlite
+  database_url: sqlite:///aft.db
+metrics:
+  stdout: true
+  jsonl_path: runs/metrics.jsonl

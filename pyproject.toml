@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "auto-fine-tuning"
+version = "0.1.0"
+description = "Self-healing fine-tuning orchestration with JAX and LangGraph"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Proprietary"}
+dependencies = [
+  "pydantic>=2.6",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
