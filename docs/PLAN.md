@@ -2,6 +2,11 @@
 
 This plan breaks the SPEC into executable tasks with dependencies, deliverables, and acceptance checks. It assumes a Python codebase using JAX, LangGraph, Orbax, and a lightweight CLI.
 
+## Progress Summary
+- Task 0: completed (scaffolding decisions, config schema, sample config).
+- Task 1: completed (data contracts, serialization helpers, docs/tests).
+- Tasks 2-12: pending; next focus is Task 2 (Forensic kernel).
+
 ## Dependency Overview
 0 -> 1 -> (2,3)
 3 -> 4
@@ -12,7 +17,7 @@ This plan breaks the SPEC into executable tasks with dependencies, deliverables,
 (3,5,6,7) -> 11
 (0-11) -> 12
 
-## 0. Baseline Decisions and Scaffolding
+## 0. Baseline Decisions and Scaffolding [DONE]
 Goal: establish project conventions before core implementation.
 Depends on: none
 
@@ -26,7 +31,7 @@ Acceptance:
 - Skeleton directories exist.
 - Config schema documented and validated by a unit test.
 
-## 1. Data Contracts
+## 1. Data Contracts [DONE]
 Goal: define stable interfaces used across components.
 Depends on: 0
 
@@ -41,7 +46,7 @@ Acceptance:
 - State serialization round-trip test passes.
 - No heavy tensors in state.
 
-## 2. JAX Forensic Kernel (analyze_batch)
+## 2. JAX Forensic Kernel (analyze_batch) [TODO]
 Goal: implement fast per-sample diagnostics.
 Depends on: 1
 
@@ -56,7 +61,7 @@ Acceptance:
 - `analyze_batch` runs on a synthetic batch and returns correct shapes.
 - Runtime within seconds on GPU for target batch size.
 
-## 3. Training Loop + Orbax Checkpointing
+## 3. Training Loop + Orbax Checkpointing [TODO]
 Goal: enable checkpointed training windows with rollback.
 Depends on: 0, 1
 
@@ -70,7 +75,7 @@ Acceptance:
 - Training window produces checkpoints and can restore deterministically.
 - Async checkpointing does not block training.
 
-## 4. Monitoring and Anomaly Detection
+## 4. Monitoring and Anomaly Detection [TODO]
 Goal: detect loss spikes, grad explosions, NaNs.
 Depends on: 1, 3
 
@@ -84,7 +89,7 @@ Acceptance:
 - Synthetic tests trigger each anomaly type.
 - MonitorNode selects correct branch for normal/anomalous states.
 
-## 5. LangGraph Supervisor (StateGraph)
+## 5. LangGraph Supervisor (StateGraph) [TODO]
 Goal: orchestrate Train -> Monitor -> Forensic -> Planner -> (Train/HITL).
 Depends on: 1, 2, 3, 4
 
@@ -98,7 +103,7 @@ Acceptance:
 - Graph runs end-to-end in a local demo.
 - Restart resumes from saved state without data loss.
 
-## 6. Planner and Repair Actions
+## 6. Planner and Repair Actions [TODO]
 Goal: implement decision logic and corrective actions.
 Depends on: 1, 2, 4, 5
 
@@ -112,7 +117,7 @@ Acceptance:
 - Unit tests cover A/B/C planner branches.
 - Blacklisted sample IDs are never reloaded into batches.
 
-## 7. Human-in-the-Loop (HITL)
+## 7. Human-in-the-Loop (HITL) [TODO]
 Goal: pause and wait for operator input on severe issues.
 Depends on: 5, 6
 
@@ -125,7 +130,7 @@ Acceptance:
 - Manual command can resume a paused graph.
 - Notifications omit raw data (IDs only).
 
-## 8. Dynamic Curriculum
+## 8. Dynamic Curriculum [TODO]
 Goal: prevent catastrophic forgetting during training.
 Depends on: 1, 3, 4
 
@@ -138,7 +143,7 @@ Acceptance:
 - Simulated eval drop triggers mix change.
 - Batch shapes remain stable across mix changes.
 
-## 9. CLI and Config
+## 9. CLI and Config [TODO]
 Goal: provide operational control.
 Depends on: 0, 1, 5
 
@@ -151,7 +156,7 @@ Acceptance:
 - CLI can start and resume a run.
 - Config errors are reported clearly.
 
-## 10. Observability and Artifacts
+## 10. Observability and Artifacts [TODO]
 Goal: make runs auditable.
 Depends on: 3, 4, 5, 6, 7, 8
 
@@ -164,7 +169,7 @@ Acceptance:
 - Artifacts are written with run_id scoping.
 - Metrics and logs can be parsed post-run.
 
-## 11. Reliability and Recovery Tests
+## 11. Reliability and Recovery Tests [TODO]
 Goal: ensure system survives faults.
 Depends on: 3, 5, 6, 7
 
@@ -177,7 +182,7 @@ Acceptance:
 - Restart resumes without manual intervention.
 - Escalation triggers after max retries.
 
-## 12. Documentation
+## 12. Documentation [TODO]
 Goal: make the system usable by others.
 Depends on: 0-11
 
